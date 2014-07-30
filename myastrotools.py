@@ -2,6 +2,8 @@
 # myastrotools
 # some useful astro functions
 
+# not really "MY" astro toold either. mostly inheritade, as they propagate through generations of astronomers. couldnt tell who was the author of which function....
+
 import datetime
 # chomp
 
