@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#produces photometry according to Bickerton & Lupton 2013 http://arxiv.org/abs/1302.4764
 
 import sys, numpy, scipy.special as special
 import pyfits 
