@@ -59,8 +59,8 @@ def offsets(data1, data2):
 #            print x1,x2,y1,y2,
             offx= x1-x2
             offy = y1-y2
-            print offx,offy
-
+            #print offx,offy
+            return offx,offy
 ##################
 # ra in seg to deg
 #####################
@@ -130,10 +130,10 @@ def decdeg2seg(dec):
         if dec<0:
             iamneg = 1
             dec *= -1.0
-            ddeg = int(dec)
-            parity = '+'
-            if iamneg==1:
-                parity = '-'
+        ddeg = int(dec)
+        parity = '+'
+        if iamneg==1:
+            parity = '-'
     except:
         ddeg=list(map(int, dec))
         parity=['+']*len(ddeg)
@@ -190,6 +190,59 @@ def gregorian_to_ut_mjd(date):
 
  #hours/24.0+date.minuted/1440+(date.seconds)/86400.
     return date.days+ (date.seconds)/86400.
+
+
+
+#######################
+def jd2gdate(myjd):
+    """Julian date to Gregorian calendar date and time of day.
+
+    The input and output are for the proleptic Gregorian calendar.
+
+    Parameters
+    ----------
+   myjd:
+        julian date (float).
+
+    Returns
+    -------
+    y, m, d, f : int, int, int, float
+        Four element tuple containing year, month, day and the
+        fractional part of the day in the Gregorian calendar. The first
+        three are integers, and the last part is a float.
+
+    """
+    from math import modf
+
+    jd_i = int(myjd)
+
+    f = myjd-jd_i
+
+    # Set JD to noon of the current date. Fractional part is the
+    # fraction from midnight of the current date.
+    if -0.5 < f < 0.5:
+        f += 0.5
+    elif f >= 0.5:
+        jd_i += 1
+        f -= 0.5
+    elif f <= -0.5:
+        jd_i -= 1
+        f += 1.5
+
+    l = jd_i + 68569
+    n = int((4 * l) / 146097.0)
+    l -= int(((146097 * n) + 3) / 4.0)
+    i = int((4000 * (l + 1)) / 1461001)
+    l -= int((1461 * i) / 4.0) - 31
+    j = int((80 * l) / 2447.0)
+    day = l - int((2447 * j) / 80.0)
+    l = int(j / 11.0)
+    month = j + 2 - (12 * l)
+    year = 100 * (n - 49) + i + l
+
+    return int(year), int(month), int(day), f
+
+
 
 #######################
 def get_mjdoff(dt):

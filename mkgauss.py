@@ -7,7 +7,7 @@ def mkgaussian(size, center=None,sig=None,theta=None):
     x = np.arange(size*1.0)
     y = x[:,np.newaxis]
     if sig==None:
-        sig=(size/100,size/100)
+        sig=(size/10,size/10)
     elif isinstance( sig, ( int, long ) )  or isinstance( sig, ( float ) ):
         sig=(sig,sig)
     else:
@@ -43,6 +43,8 @@ if __name__=='__main__':
                       help='sigma of the gaussian: float or comma separated sequence of 2 floats')
     parser.add_option('--theta', default=None, type=float,
                       help='angle in degreed')
+    parser.add_option('--normalization', default=1.0, type=float,
+                      help='normalization factor')
     parser.add_option('--save', default=False,action='store_true',
                       help='save the gaussian as a fits file')
     parser.add_option('--show', default=False,action='store_true',
@@ -73,6 +75,7 @@ if __name__=='__main__':
         
 
     gauss,c,s,t=mkgaussian(options.size,sig=sigma,center=center,theta=options.theta)
+    gauss = options.normalization*gauss
     if options.show:
         import pylab as pl
         pl.imshow(gauss)
